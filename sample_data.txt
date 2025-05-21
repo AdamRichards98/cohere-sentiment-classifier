@@ -1,0 +1,5 @@
+    "I'm so excited about this new feature!",
+    "Nothing about this impressed me.",
+    "It's fine I guess, just not amazing.",
+    "This makes me really angry.",
+    "Wow, I’m speechless in the best way."

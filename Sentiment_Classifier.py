@@ -30,6 +30,7 @@ from dotenv import load_dotenv
 # Ensure you have a .env file with your API key
 load_dotenv()
 api_key = os.getenv("COHERE_API_KEY")
+
 if not api_key:
     raise ValueError("Missing API key. Check your .env file.") # Ensure you have a .env file with your API key
 
@@ -52,18 +53,26 @@ Sentiment: Neutral
 Sentence: {}
 Sentiment:"""
 
-# Sentences to classify
-inputs = [
-    "I'm so excited about this new feature!",
-    "Nothing about this impressed me.",
-    "It's fine I guess, just not amazing.",
-    "This makes me really angry.",
-    "Wow, I’m speechless in the best way."
-]
+# Input file containing sentences to classify
+input_file = "sample_data.txt"
+
+# Check if the input file exists and read sentences from it
+try:
+    
+    with open(input_file, 'r') as file:
+        print(f"Reading sentences from {input_file}...")
+        inputs = [line.strip() for line in file.readlines()]
+        
+except FileNotFoundError:
+    
+    print(f"Input file '{input_file}' not found. Please create it with sentences to classify.")
+    exit(1)
 
 # Classify the sentiment
 print("Sentiment Classification Results:\n")
+
 for sentence in inputs:
+    
     prompt = example_prompts.format(sentence)
     response = co.generate(
         model='command-xlarge',
@@ -72,5 +81,6 @@ for sentence in inputs:
         temperature=0.3,
         stop_sequences=["\n"]
     )
+    
     sentiment = response.generations[0].text.strip()
     print(f"\"{sentence}\" → {sentiment}")
